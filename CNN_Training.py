@@ -14,7 +14,7 @@ no_of_class=len(list)
 
 #########################
 # importing the folders as class
-for x in range(0,no_of_class-1):
+for x in range(0,no_of_class):
     picture_list=os.listdir(path+"/Number-"+str(x))
     for y in picture_list:
         current_image=cv2.imread(path+"/Number-"+str(x)+"/"+y)
