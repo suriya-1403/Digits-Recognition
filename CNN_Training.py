@@ -2,12 +2,15 @@ import cv2
 import numpy as np
 import os
 from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
 
 ################################
 path='data'
 images=[]
 test_ratio=0.2
+val_ratio=0.2
 class_number=[]
+no_of_samples=[]
 ###############
 
 list = os.listdir(path)
@@ -39,7 +42,21 @@ print(images.shape)
 #########################################
 #spliting the data
 #20%testing and 80%training
-x_train,x_test,y_train,y_test = train_test_split(images,class_number,test_size=0.2)
-
+x_train,x_test,y_train,y_test = train_test_split(images,class_number,test_size=test_ratio)
+x_train,x_validation,y_train,y_validation = train_test_split(x_train,y_train,test_size=val_ratio)
 print(x_train.shape)
 print(x_test.shape)
+print(x_validation.shape)
+# x_train contains images and y_train contains ids
+# as the numbers(0-9) is 10
+for x in range(0,no_of_class):
+    #print(len(np.where(y_train==x)[0]))
+    no_of_samples.append(len(np.where(y_train==x)[0]))
+print(no_of_samples)
+
+plt.figure(figsize=(10,5))
+plt.bar(range(0,no_of_class),no_of_samples)
+plt.title("Number of Images in each Class")
+plt.xlabel("Class ID")
+plt.ylabel("Number of Images")
+plt.show()
