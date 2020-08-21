@@ -60,3 +60,21 @@ plt.title("Number of Images in each Class")
 plt.xlabel("Class ID")
 plt.ylabel("Number of Images")
 plt.show()
+
+def preProcessing(img):
+    img=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+    img = cv2.equalizeHist(img)
+    img = img/255
+    return img
+
+# img = preProcessing(x_train[30])
+# img=cv2.resize(img,(300,300))
+# cv2.imshow("PreProcessed",img)
+# cv2.waitKey(0)
+
+x_train=np.array(list(map(preProcessing,x_train)))
+# img = x_train[30]
+# img=cv2.resize(img,(300,300))
+# cv2.imshow("PreProcessed",img)
+# cv2.waitKey(0)
+print(x_train[30].shape)
