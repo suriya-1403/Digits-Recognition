@@ -11,6 +11,7 @@ test_ratio=0.2
 val_ratio=0.2
 class_number=[]
 no_of_samples=[]
+lists=[]
 ###############
 
 list = os.listdir(path)
@@ -72,9 +73,9 @@ def preProcessing(img):
 # cv2.imshow("PreProcessed",img)
 # cv2.waitKey(0)
 
-x_train=np.array(list(map(preProcessing,x_train)))
-# img = x_train[30]
-# img=cv2.resize(img,(300,300))
-# cv2.imshow("PreProcessed",img)
-# cv2.waitKey(0)
+x_train=np.array(lists(map(preProcessing,x_train)))
+img = x_train[30]
+img=cv2.resize(img,(300,300))
+cv2.imshow("PreProcessed",img)
+cv2.waitKey(0)
 print(x_train[30].shape)
