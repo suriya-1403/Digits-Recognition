@@ -4,6 +4,8 @@ import os
 import pickle
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
+import sklearn.externals
+import joblib
 from keras.preprocessing.image import ImageDataGenerator
 from keras.utils.np_utils import to_categorical
 from keras.models import Sequential
@@ -21,7 +23,7 @@ no_of_samples=[]
 image_Dimension=[32,32]
 batchsize_value=50
 epochs_value=2
-steps_per_epoch_value=10160//batchsize_value
+steps_per_epoch_value=2000
 ###############
 
 _list_ = os.listdir(path)
@@ -123,7 +125,7 @@ def _model_():
     no_of_node=500
 
     model=Sequential()
-    model.add((Conv2D(no_of_filters,size_of_filter,input_shape=(image_Dimension[0],image_Dimension[1],1),activation='relu')))
+    model.add((Conv2D(no_of_filters,size_of_filter,input_shape=(32,32,1),activation='relu')))
     model.add((Conv2D(no_of_filters,size_of_filter,activation='relu')))
     model.add(MaxPooling2D(pool_size=size_of_pool))
     model.add((Conv2D(no_of_filters//2,size_of_filter2,activation='relu')))
@@ -134,7 +136,7 @@ def _model_():
     model.add(Flatten())
     model.add(Dense(no_of_node,activation='relu'))
     model.add(Dropout(0.5))
-    model.add(Dense(no_of_class,activation='softmax'))
+    model.add(Dense(10,activation='softmax'))
     model.compile(Adam(lr=0.001),loss='categorical_crossentropy',metrics=['accuracy'])
     return model
 
@@ -151,7 +153,6 @@ plt.figure(1)
 plt.plot(history.history['loss'])
 plt.plot(history.history['val_loss'])
 plt.legend(['training','validation'])
-
 plt.title('Loss')
 plt.xlabel('Epoch')
 
@@ -166,11 +167,14 @@ plt.show()
 score=model.evaluate(x_test,y_test,verbose=0)
 print('Test score: ',score[0])
 print('Test Accuracy: ',score[1])
+print(int(model.predict_classes(images)))
 
 ################################################################################################
 ################################storing as pickle object########################################
 ################################################################################################
 
-with open('pickle_file/model_trained.p','wb') as pickle_out:
-    pickle.dump(model,pickle_out)
-pickle_out.close()
+# with open('pickle_file/model_trained','wb') as pickle_out:
+#     pickle.dump(model,pickle_out)
+# pickle_out.close()
+
+# joblib.dump(model,'model_trained')
