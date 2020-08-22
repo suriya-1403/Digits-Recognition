@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import os
+import pickle
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from keras.preprocessing.image import ImageDataGenerator
@@ -18,6 +19,9 @@ val_ratio=0.2
 class_number=[]
 no_of_samples=[]
 image_Dimension=[32,32]
+batchsize_value=50
+epochs_value=2
+steps_per_epoch_value=10160//batchsize_value
 ###############
 
 _list_ = os.listdir(path)
@@ -137,7 +141,36 @@ def _model_():
 model=_model_()
 print(model.summary())
 
-batchsize_value=50
-epochs_value=10
-steps_per_epoch_value=2000
-history=model.fit_generator(data_Generator.flow(x_train,y_train,batch_size=batchsize_value),steps_per_epoch=steps_per_epoch_value,epochs=epochs_value,validation_data=(x_validation,y_validation),shuffle=1)
+history=model.fit_generator(data_Generator.flow(x_train,y_train,batch_size=batchsize_value),
+                                                steps_per_epoch=steps_per_epoch_value,
+                                                epochs=epochs_value,
+                                                validation_data=(x_validation,y_validation),
+                                                shuffle=1)
+
+plt.figure(1)
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.legend(['training','validation'])
+
+plt.title('Loss')
+plt.xlabel('Epoch')
+
+plt.figure(2)
+plt.plot(history.history['accuracy'])
+plt.plot(history.history['val_accuracy'])
+plt.legend(['training','validation'])
+
+plt.title('Accuracy')
+plt.xlabel('Epoch')
+plt.show()
+score=model.evaluate(x_test,y_test,verbose=0)
+print('Test score: ',score[0])
+print('Test Accuracy: ',score[1])
+
+################################################################################################
+################################storing as pickle object########################################
+################################################################################################
+
+pickle_out=open("pickle_file/model_trained.p","wb")
+pickle.dump(model,pickle_out)
+pickle_out.close()
