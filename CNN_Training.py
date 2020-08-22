@@ -95,7 +95,10 @@ x_train=x_train.reshape(x_train.shape[0],x_train.shape[1],x_train.shape[2],1)
 x_test=x_test.reshape(x_test.shape[0],x_test.shape[1],x_test.shape[2],1)
 x_validation=x_validation.reshape(x_validation.shape[0],x_validation.shape[1],x_validation.shape[2],1)
 
-#
+################################################################################################
+################################Augment part####################################################
+################################################################################################
+
 data_Generator = ImageDataGenerator(width_shift_range=0.1,
                                     height_shift_range=0.1,
                                     zoom_range=0.2,
@@ -133,3 +136,8 @@ def _model_():
 
 model=_model_()
 print(model.summary())
+
+batchsize_value=50
+epochs_value=10
+steps_per_epoch_value=2000
+history=model.fit_generator(data_Generator.flow(x_train,y_train,batch_size=batchsize_value),steps_per_epoch=steps_per_epoch_value,epochs=epochs_value,validation_data=(x_validation,y_validation),shuffle=1)
