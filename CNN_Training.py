@@ -171,6 +171,6 @@ print('Test Accuracy: ',score[1])
 ################################storing as pickle object########################################
 ################################################################################################
 
-pickle_out=open("pickle_file/model_trained.p","wb")
-pickle.dump(model,pickle_out)
+with open('pickle_file/model_trained.p','wb') as pickle_out:
+    pickle.dump(model,pickle_out)
 pickle_out.close()
