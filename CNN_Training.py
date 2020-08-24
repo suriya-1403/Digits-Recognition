@@ -1,13 +1,15 @@
 import cv2
+import keras
 import numpy as np
 import os
 import pickle
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-# import sklearn.externals
-# import joblib
+# from sklearn.externals
+import joblib
 from keras.preprocessing.image import ImageDataGenerator
 from keras.utils.np_utils import to_categorical
+# from keras.callbacks import ModelCheckpoint
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten, BatchNormalization, MaxPool2D, Conv2D
 from keras.optimizers import Adam
@@ -24,7 +26,7 @@ class_number = []
 no_of_samples = []
 image_Dimension = [32, 32]
 batchsize_value = 50
-epochs_value = 20
+epochs_value = 10
 # steps_per_epoch_value=2000
 steps_per_epoch_value = 2000
 ###############
@@ -107,7 +109,7 @@ x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], x_test.shape[2], 1)
 x_validation = x_validation.reshape(x_validation.shape[0], x_validation.shape[1], x_validation.shape[2], 1)
 
 
-def _model_():
+def CNNmodel():
     no_of_filters = 60
     size_of_filter = (5, 5)
     size_of_filter2 = (3, 3)
@@ -134,12 +136,12 @@ def _model_():
     model.add(Dense(no_of_node * 2, activation='relu'))
     model.add(Dropout(0.5))
     model.add(Dense(10, activation='softmax'))
-    optimier=Adam(lr=1e-4)
-    model.compile(optimizer=optimier, loss='categorical_crossentropy', metrics=['accuracy'])
+    optimiser=Adam(lr=1e-4)
+    model.compile(optimizer=optimiser, loss='categorical_crossentropy', metrics=['accuracy'])
     return model
 
 
-model = _model_()
+model = CNNmodel()
 print(model.summary())
 
 ################################################################################################
@@ -167,6 +169,7 @@ y_validation = to_categorical(y_validation, no_of_class)
 #                                                 validation_data=(x_validation,y_validation),
 #                                                 shuffle=1)
 annealer = LearningRateScheduler(lambda x: 1e-3 * 0.9 ** x)
+
 history = model.fit(data_Generator.flow(x_train, y_train, batch_size=batchsize_value), steps_per_epoch=x_train.shape[0] // batchsize_value,
                     epochs=epochs_value, validation_data=(x_validation, y_validation), shuffle=True, callbacks=[annealer], verbose=2)
 
@@ -193,8 +196,8 @@ print('Test Accuracy: ', score[1])
 ################################storing as pickle object########################################
 ################################################################################################
 
-with open('pickle_file/model_trained','wb') as pickle_out:
-    pickle.dump(model,pickle_out)
-pickle_out.close()
-
-# joblib.dump(model,'model_trained')
+# with open('pickle_file/model_trained.p','bw') as pickle_out:
+#     pickle.dump(history,pickle_out)
+# # pickle_out.close()
+#
+# # joblib.dump(model,'model_trained.pkl')
