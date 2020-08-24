@@ -1,0 +1,101 @@
+PyDev console: starting.
+Python 3.8.2 (v3.8.2:7b3ab5921f, Feb 24 2020, 17:52:18) 
+[Clang 6.0 (clang-600.0.57)] on darwin
+runfile('/Users/suriyakrishnan/Documents/GitHub/Digits-Recognition/CNN_Training.py', wdir='/Users/suriyakrishnan/Documents/GitHub/Digits-Recognition')
+10
+0 1 2 3 4 5 6 7 8 9  
+(10160, 32, 32, 3)
+(6502, 32, 32, 3)
+(2032, 32, 32, 3)
+(1626, 32, 32, 3)
+[666, 633, 647, 643, 632, 652, 670, 655, 660, 644]
+(6502, 32, 32)
+2020-08-24 09:13:44.466937: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x7fcafefbbf70 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-08-24 09:13:44.466961: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv2d (Conv2D)              (None, 28, 28, 60)        1560      
+_________________________________________________________________
+batch_normalization (BatchNo (None, 28, 28, 60)        240       
+_________________________________________________________________
+conv2d_1 (Conv2D)            (None, 24, 24, 60)        90060     
+_________________________________________________________________
+batch_normalization_1 (Batch (None, 24, 24, 60)        240       
+_________________________________________________________________
+max_pooling2d (MaxPooling2D) (None, 12, 12, 60)        0         
+_________________________________________________________________
+dropout (Dropout)            (None, 12, 12, 60)        0         
+_________________________________________________________________
+conv2d_2 (Conv2D)            (None, 10, 10, 120)       64920     
+_________________________________________________________________
+batch_normalization_2 (Batch (None, 10, 10, 120)       480       
+_________________________________________________________________
+conv2d_3 (Conv2D)            (None, 8, 8, 120)         129720    
+_________________________________________________________________
+batch_normalization_3 (Batch (None, 8, 8, 120)         480       
+_________________________________________________________________
+max_pooling2d_1 (MaxPooling2 (None, 4, 4, 120)         0         
+_________________________________________________________________
+dropout_1 (Dropout)          (None, 4, 4, 120)         0         
+_________________________________________________________________
+flatten (Flatten)            (None, 1920)              0         
+_________________________________________________________________
+dense (Dense)                (None, 512)               983552    
+_________________________________________________________________
+dropout_2 (Dropout)          (None, 512)               0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 1024)              525312    
+_________________________________________________________________
+dropout_3 (Dropout)          (None, 1024)              0         
+_________________________________________________________________
+dense_2 (Dense)              (None, 10)                10250     
+=================================================================
+Total params: 1,806,814
+Trainable params: 1,806,094
+Non-trainable params: 720
+_________________________________________________________________
+None
+Epoch 1/20
+130/130 - 96s - loss: 0.8603 - accuracy: 0.7378 - val_loss: 1.5979 - val_accuracy: 0.5148 - lr: 0.0010
+Epoch 2/20
+130/130 - 94s - loss: 0.2224 - accuracy: 0.9310 - val_loss: 1.3569 - val_accuracy: 0.5160 - lr: 9.0000e-04
+Epoch 3/20
+130/130 - 103s - loss: 0.1562 - accuracy: 0.9530 - val_loss: 0.3303 - val_accuracy: 0.8850 - lr: 8.1000e-04
+Epoch 4/20
+130/130 - 103s - loss: 0.1231 - accuracy: 0.9628 - val_loss: 0.0704 - val_accuracy: 0.9772 - lr: 7.2900e-04
+Epoch 5/20
+130/130 - 97s - loss: 0.1001 - accuracy: 0.9684 - val_loss: 0.0366 - val_accuracy: 0.9883 - lr: 6.5610e-04
+Epoch 6/20
+130/130 - 90s - loss: 0.0787 - accuracy: 0.9768 - val_loss: 0.0183 - val_accuracy: 0.9945 - lr: 5.9049e-04
+Epoch 7/20
+130/130 - 91s - loss: 0.0762 - accuracy: 0.9774 - val_loss: 0.0600 - val_accuracy: 0.9846 - lr: 5.3144e-04
+Epoch 8/20
+130/130 - 89s - loss: 0.0574 - accuracy: 0.9825 - val_loss: 0.0211 - val_accuracy: 0.9926 - lr: 4.7830e-04
+Epoch 9/20
+130/130 - 89s - loss: 0.0561 - accuracy: 0.9828 - val_loss: 0.0486 - val_accuracy: 0.9883 - lr: 4.3047e-04
+Epoch 10/20
+130/130 - 90s - loss: 0.0501 - accuracy: 0.9830 - val_loss: 0.0157 - val_accuracy: 0.9945 - lr: 3.8742e-04
+Epoch 11/20
+130/130 - 90s - loss: 0.0431 - accuracy: 0.9859 - val_loss: 0.0281 - val_accuracy: 0.9926 - lr: 3.4868e-04
+Epoch 12/20
+130/130 - 89s - loss: 0.0439 - accuracy: 0.9850 - val_loss: 0.0134 - val_accuracy: 0.9969 - lr: 3.1381e-04
+Epoch 13/20
+130/130 - 91s - loss: 0.0318 - accuracy: 0.9898 - val_loss: 0.0186 - val_accuracy: 0.9926 - lr: 2.8243e-04
+Epoch 14/20
+130/130 - 91s - loss: 0.0311 - accuracy: 0.9899 - val_loss: 0.0168 - val_accuracy: 0.9963 - lr: 2.5419e-04
+Epoch 15/20
+130/130 - 90s - loss: 0.0230 - accuracy: 0.9921 - val_loss: 0.0123 - val_accuracy: 0.9957 - lr: 2.2877e-04
+Epoch 16/20
+130/130 - 90s - loss: 0.0291 - accuracy: 0.9901 - val_loss: 0.0163 - val_accuracy: 0.9951 - lr: 2.0589e-04
+Epoch 17/20
+130/130 - 89s - loss: 0.0237 - accuracy: 0.9924 - val_loss: 0.0095 - val_accuracy: 0.9969 - lr: 1.8530e-04
+Epoch 18/20
+130/130 - 92s - loss: 0.0225 - accuracy: 0.9929 - val_loss: 0.0092 - val_accuracy: 0.9975 - lr: 1.6677e-04
+Epoch 19/20
+130/130 - 92s - loss: 0.0191 - accuracy: 0.9935 - val_loss: 0.0082 - val_accuracy: 0.9963 - lr: 1.5009e-04
+Epoch 20/20
+130/130 - 89s - loss: 0.0168 - accuracy: 0.9947 - val_loss: 0.0159 - val_accuracy: 0.9938 - lr: 1.3509e-04
+Test score:  0.01216131541877985
+Test Accuracy:  0.9950787425041199
