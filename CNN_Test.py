@@ -8,7 +8,7 @@ from keras.models import load_model
 from keras.models import Sequential
 
 
-HD="Hierarchical_data/trained_model.h5"
+HD='Hierarchical_data/trained_model.h5'
 model = load_model(HD)
 #####################################
 # Invoking camera
