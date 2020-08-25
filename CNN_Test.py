@@ -15,7 +15,7 @@ cap.set(3,width)
 cap.set(4,height)
 
 #### LOAD THE TRAINNED MODEL
-pickle_in = open("pickle_file/model_trained_10.p","rb")
+pickle_in = open("pickle_file/model_trained.p","rb")
 model = pickle.load(pickle_in)
 
 #### PREPORCESSING FUNCTION
