@@ -15,8 +15,8 @@ from keras.layers import Dense, Dropout, Flatten, BatchNormalization, MaxPool2D,
 from keras.optimizers import Adam
 # from keras.layers.convolutional import Conv2D, MaxPool2D
 from tensorflow.python.keras.callbacks import LearningRateScheduler
-################################
 
+################################################################################################
 
 path = 'data'
 images = []
@@ -26,22 +26,20 @@ class_number = []
 no_of_samples = []
 image_Dimension = [32, 32]
 batchsize_value = 50
-epochs_value = 2
-# steps_per_epoch_value=2000
+epochs_value = 20
 steps_per_epoch_value = 2000
-PICKLE_FILE="pickle_file/trained_model.p"
-###############
-width = 640
-height = 480
-threshold = 0.65 # MINIMUM PROBABILITY TO CLASSIFY
-cameraNo = 0
-###################
+HD="Hierarchical_data/trained_model.h5"
+
+################################################################################################
+
 _list_ = os.listdir(path)
 print(len(_list_))
 no_of_class = len(_list_)
 
-#########################
-# importing the folders as class
+################################################################################################
+# Importing the folders as class
+################################################################################################
+
 for x in range(0, no_of_class):
     picture_list = os.listdir(path + "/Number-" + str(x))
     for y in picture_list:
@@ -53,8 +51,10 @@ for x in range(0, no_of_class):
     print(x, end=" ")
 print(" ")
 # print(len(images)) = print(len(images))
-#########################
-# convert into numpy array
+
+################################################################################################
+# Convert into numpy array
+################################################################################################
 
 images = np.array(images)
 class_number = np.array(class_number)
@@ -62,9 +62,11 @@ class_number = np.array(class_number)
 print(images.shape)
 # print(class_number.shape)
 
-#########################################
-# spliting the data
+################################################################################################
+# Spliting the data
 # 20%testing and 80%training
+################################################################################################
+
 x_train, x_test, y_train, y_test = train_test_split(images, class_number, test_size=test_ratio,random_state=2)
 x_train, x_validation, y_train, y_validation = train_test_split(x_train, y_train, test_size=val_ratio,random_state=2)
 print(x_train.shape)
@@ -84,11 +86,14 @@ plt.xlabel("Class ID")
 plt.ylabel("Number of Images")
 plt.show()
 
+################################################################################################
+# Preprocessing the Image
+################################################################################################
 
 def preProcessing(img):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img = cv2.equalizeHist(img)
-    img = img / 255    #normalization -bring to 0 to 1
+    img = img / 255    #normalization - brings to 0 ... 1
     return img
 
 
@@ -113,6 +118,9 @@ x_train = x_train.reshape(x_train.shape[0], x_train.shape[1], x_train.shape[2], 
 x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], x_test.shape[2], 1)
 x_validation = x_validation.reshape(x_validation.shape[0], x_validation.shape[1], x_validation.shape[2], 1)
 
+################################################################################################
+# Convolutional Neural Networks
+################################################################################################
 
 def CNNmodel():
     no_of_filters = 60
@@ -150,7 +158,7 @@ model = CNNmodel()
 print(model.summary())
 
 ################################################################################################
-################################Augment part####################################################
+# Augment part
 ################################################################################################
 
 data_Generator = ImageDataGenerator(width_shift_range=0.1,
@@ -180,36 +188,50 @@ history = model.fit(data_Generator.flow(x_train, y_train, batch_size=batchsize_v
 
 #print(history)
 
-#with open(PICKLE_FILE, 'wb') as file:
-#    pickle.dump(model, file)
-#
-#plt.figure(1)
-#plt.plot(history.history['loss'])
-#plt.plot(history.history['val_loss'])
-#plt.legend(['training', 'validation'])
-#plt.title('Loss')
-#plt.xlabel('Epoch')
-#
-#plt.figure(2)
-#plt.plot(history.history['accuracy'])
-#plt.plot(history.history['val_accuracy'])
-#plt.legend(['training', 'validation'])
-#plt.title('Accuracy')
-#plt.xlabel('Epoch')
-#plt.show()
+################################################################################################
+# ploting the accuracy and loss graph
+################################################################################################
+
+plt.figure(1)
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.legend(['training', 'validation'])
+plt.title('Loss')
+plt.xlabel('Epoch')
+
+plt.figure(2)
+plt.plot(history.history['accuracy'])
+plt.plot(history.history['val_accuracy'])
+plt.legend(['training', 'validation'])
+plt.title('Accuracy')
+plt.xlabel('Epoch')
+plt.show()
+
+################################################################################################
+# Evaluating the test results
+################################################################################################
+
 score = model.evaluate(x_test, y_test, verbose=0)
 print('Test score: ', score[0])
 print('Test Accuracy: ', score[1])
 #im=images.reshape((1,32,32,1))
 #prediction=model.predict_classes(images)
 #print(prediction[137])
+
 ################################################################################################
-################################storing as pickle object########################################
+# Storing as h5py object
 ################################################################################################
-model.save('trained_cnn_model.h5')
-# with open('pickle_file/model_trained.p','bw') as pickle_out:
-#     pickle.dump(history,pickle_out)
+
+model.save(HD)
+
+################################################################################################
+#Other alternative for storing the models
+################################################################################################
+
+# with open('HD','bw') as pickle_out:
+#     pickle.dump(model,pickle_out)
 # # pickle_out.close()
 #
 # # joblib.dump(model,'model_trained.pkl')
-##################################################
+
+################################################################################################
