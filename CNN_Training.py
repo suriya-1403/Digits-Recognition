@@ -26,11 +26,16 @@ class_number = []
 no_of_samples = []
 image_Dimension = [32, 32]
 batchsize_value = 50
-epochs_value = 10
+epochs_value = 20
 # steps_per_epoch_value=2000
 steps_per_epoch_value = 2000
+PICKLE_FILE="pickle_file/trained_model.p"
 ###############
-
+width = 640
+height = 480
+threshold = 0.65 # MINIMUM PROBABILITY TO CLASSIFY
+cameraNo = 0
+###################
 _list_ = os.listdir(path)
 print(len(_list_))
 no_of_class = len(_list_)
@@ -83,7 +88,7 @@ plt.show()
 def preProcessing(img):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img = cv2.equalizeHist(img)
-    img = img / 255
+    img = img / 255    #normalization -bring to 0 to 1
     return img
 
 
@@ -173,25 +178,31 @@ annealer = LearningRateScheduler(lambda x: 1e-3 * 0.9 ** x)
 history = model.fit(data_Generator.flow(x_train, y_train, batch_size=batchsize_value), steps_per_epoch=x_train.shape[0] // batchsize_value,
                     epochs=epochs_value, validation_data=(x_validation, y_validation), shuffle=True, callbacks=[annealer], verbose=2)
 
-plt.figure(1)
-plt.plot(history.history['loss'])
-plt.plot(history.history['val_loss'])
-plt.legend(['training', 'validation'])
-plt.title('Loss')
-plt.xlabel('Epoch')
+print(history)
 
-plt.figure(2)
-plt.plot(history.history['accuracy'])
-plt.plot(history.history['val_accuracy'])
-plt.legend(['training', 'validation'])
-plt.title('Accuracy')
-plt.xlabel('Epoch')
-plt.show()
+#with open(PICKLE_FILE, 'wb') as file:
+#    pickle.dump(model, file)
+#
+#plt.figure(1)
+#plt.plot(history.history['loss'])
+#plt.plot(history.history['val_loss'])
+#plt.legend(['training', 'validation'])
+#plt.title('Loss')
+#plt.xlabel('Epoch')
+#
+#plt.figure(2)
+#plt.plot(history.history['accuracy'])
+#plt.plot(history.history['val_accuracy'])
+#plt.legend(['training', 'validation'])
+#plt.title('Accuracy')
+#plt.xlabel('Epoch')
+#plt.show()
 score = model.evaluate(x_test, y_test, verbose=0)
 print('Test score: ', score[0])
 print('Test Accuracy: ', score[1])
-# print(int(model.predict_classes(images)))
-
+#im=images.reshape((1,32,32,1))
+#prediction=model.predict_classes(images)
+#print(prediction[137])
 ################################################################################################
 ################################storing as pickle object########################################
 ################################################################################################
@@ -201,3 +212,34 @@ print('Test Accuracy: ', score[1])
 # # pickle_out.close()
 #
 # # joblib.dump(model,'model_trained.pkl')
+##################################################
+#### PREPORCESSING FUNCTION
+
+cap = cv2.VideoCapture(cameraNo)
+cap.set(3,width)
+cap.set(4,height)
+
+while True:
+    success, imgOriginal = cap.read()
+    img = np.asarray(imgOriginal)
+    img = cv2.resize(img,(32,32))
+    img = preProcessing(img)
+    cv2.imshow("Processsed Image",img)
+    img = img.reshape(1,32,32,1)
+    #### PREDICT
+    classIndex = int(model.predict_classes(img))
+    #print(classIndex)
+    predictions = model.predict(img)
+    #print(predictions)
+    probVal= np.amax(predictions)
+    print(classIndex,probVal)
+
+    if probVal> threshold:
+        cv2.putText(imgOriginal,str(classIndex) + "   "+str(probVal),
+                    (50,50),cv2.FONT_HERSHEY_COMPLEX,
+                    1,(0,0,255),1)
+
+    cv2.imshow("Original Image",imgOriginal)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
