@@ -28,7 +28,7 @@ image_Dimension = [32, 32]
 batchsize_value = 50
 epochs_value = 20
 steps_per_epoch_value = 2000
-HD='Hierarchical_data/trained_model.h5'
+HD='Hierarchical_data/trained_CNN_model.h5'
 
 ################################################################################################
 

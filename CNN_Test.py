@@ -8,7 +8,7 @@ from keras.models import load_model
 from keras.models import Sequential
 
 
-HD='Hierarchical_data/trained_model.h5'
+HD='Hierarchical_data/trained_CNN_model.h5'
 model = load_model(HD)
 #####################################
 # Invoking camera
@@ -48,7 +48,7 @@ while True:
 ################################################################################################
 
     if probability_value>0.65:
-        cv2.putText(imagOriginal,str(classIndex) + "   "+str(probability_value),(50,50),cv2.FONT_HERSHEY_COMPLEX,1,(0,0,255),1)
+        cv2.putText(imagOriginal,str(classIndex) + "  " +str(probability_value),(50,50),cv2.FONT_HERSHEY_COMPLEX,1,(0,0,255),1)
         cv2.imshow("Digits Recognition",imagOriginal)
     # Press q to exit
     if cv2.waitKey(1) & 0xFF == ord('q'):
